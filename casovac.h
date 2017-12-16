@@ -1,7 +1,7 @@
 #ifndef CASOVAC_H
 #define CASOVAC_H
 
-#define N_CASOVACU 10
+#define N_CASOVACU 16
 
 #define NONE 0
 #define INFINITE 1
@@ -16,15 +16,16 @@ private:
     unsigned long cas = 0;
     unsigned long citac = 0;
     unsigned int aktivni = 1;
-    unsigned int pozice_v_ct;
+    unsigned int pozice_v_ct;   /// v podstate iterator
     void (*p_func)(void);
     int typ = INFINITE ;
 
-public:
+public:   /// sada konstruktoru ///
     casovac (); ///konstruktor  casovac pr; INFINITE
     casovac (void (*)(void)); ///  ONCE or SEVERAL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     casovac (unsigned long,void (*)(void)); ///casovac pr(1000,funkce); INFINITE
     casovac (unsigned long,unsigned long,void (*)(void)); ///casovac pr(1000,offset,funkce); INFINITE
+
     void over (); //hlavni program
     void init();
     void new_time(unsigned long); //   pr.new_time(5000);
@@ -38,6 +39,8 @@ public:
     void inaktiv(); /// deaktivuje casovac
     void loop_all();/// checkuje  vsechny instance tridy casovac
     void del ();
+    void debug();
+    void resort(void);
 };
 /// ///////////////////////////////////////// ct /////////////////////////////////////////
 class ct //registr casovacu
@@ -51,6 +54,8 @@ public:
     int add_address(casovac *);
     void del(unsigned int);
     void loop (void);
+    void debug (void);
+    void resort(void);
 } ;
 
 #endif // CASOVAC_H

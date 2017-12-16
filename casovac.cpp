@@ -2,6 +2,8 @@
 //#include <time.h>
 #include "casovac.h"
 #include <Arduino.h>
+#define ANO 1
+#define NE 0
 
 ct ctAll;
 
@@ -10,7 +12,7 @@ ct ctAll;
 casovac::casovac ()
 {
     typ = NONE ;
-    aktivni = 0;
+    aktivni = NE;
     pozice_v_ct = ctAll.add_address(this);
 }
 /// /////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +22,7 @@ casovac::casovac (unsigned long t,void (*f)(void)) /// INFINITE
     p_func = f;
     inkrement = t;
     cas = millis();
-    aktivni = 1;
+    aktivni = ANO;
     pozice_v_ct = ctAll.add_address(this);
 }
 /// ///////////////////////////////////////////////////////////////////////////////////////
@@ -28,7 +30,7 @@ casovac::casovac (void (*f)(void))  /// NONE
 {
     typ = NONE ;
     p_func = f;
-    aktivni = 0;
+    aktivni = NE;
     pozice_v_ct = ctAll.add_address(this);
 }
 /// ///////////////////////////////////casovac (time,offset,func) ////////////////////////////////////////////////////////
@@ -37,7 +39,7 @@ casovac::casovac (unsigned long t,unsigned long offset,void (*f)(void))  /// INF
     p_func = f;
     inkrement = t;
     cas = millis() + offset;
-    aktivni = 1;
+    aktivni = ANO;
     pozice_v_ct = ctAll.add_address(this);
 }
 /// /////////////////////////////   run   ///////////////////////
@@ -46,7 +48,7 @@ void casovac::over()
     if(millis() > cas )
     {
         cas = cas + inkrement;
-        if(aktivni > 0)
+        if(aktivni > NE)
         {
             /// zde se spousti pri preteceni
             //Serial.print (pozice_v_ct);
@@ -74,12 +76,12 @@ void casovac::new_func(void (*f)(void) )
 /// ////////////////////// zmena aktivity ///////////////////////
 void casovac::aktiv()
 {
-    aktivni = 1;
+    aktivni = ANO;
 }
 /// //////////////////////////////////////////////////////////////
 void casovac::inaktiv()
 {
-    aktivni = 0;
+    aktivni = NE;
 }
 /// ////////////////////// chekovani timeru /////////////////////
 void casovac::loop_all()
@@ -114,9 +116,21 @@ void casovac::start(unsigned long t,unsigned long times,void (*f)(void)) /// SEV
     aktivni++;
 }
 
+/// ////////////////////////// odhlaseni z ct ////////////////////////////////////
 void casovac::del ()
 {
     ctAll.del(pozice_v_ct);
+    resort();
+}
+/// ////////////////////////// debuger ////////////////////////////////////////////
+void casovac::debug()
+{
+    ctAll.debug();
+}
+/// ////////////////////////// resorter ////////////////////////////////////////////
+void casovac::resort()
+{
+    ctAll.resort();
 }
 
 /// //////////////////////////////////////////////////////////////////////////////////
@@ -144,9 +158,45 @@ void ct::loop(void)
         addressy[i]->over();
     }
 }
-
+/// /////////////////////   delete from list  ////////////////////////////////
 void ct::del(unsigned int tmp)
 {
     priznak[tmp] = 0;
+}
+/// /////////////////////////   debuger    ///////////////////////////////////
+void ct::debug()
+{
+    Serial.print("_________________________________________");
+    Serial.print(pocet);
+    Serial.print("/");
+    Serial.print(N_CASOVACU);
+    Serial.print("#");
+    for(int i  = 0; i < N_CASOVACU; i++)
+    {
+        Serial.print(priznak[i]);
+    }
+    Serial.println("#");
+}
+/// /////////////////////////  re-sort  //////////////////////////////////////
+void ct::resort(void)
+{
+    int posledniPocet = pocet;
+    for(int i  = 0; i < posledniPocet; i++)
+    {
+        if(priznak[i] == 0 && i < (posledniPocet -1)) /// zanamy mimo konce
+        {
+            priznak[i] = priznak[posledniPocet - 1];   /// presun <-
+            priznak[posledniPocet - 1] = 0;            /// nulovani posledniho
+            addressy[i] = addressy[posledniPocet - 1]; /// presun <-
+            posledniPocet --; /// snizeni ukazatele
+        }
+
+        else if (priznak[i] == 0 && i == (posledniPocet -1)) /// posledni zaznam
+        {
+
+            posledniPocet --; /// snizeni ukazatele
+        }
+    }
+    pocet = posledniPocet;
 }
 
