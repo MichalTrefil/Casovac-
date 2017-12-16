@@ -16,6 +16,7 @@ private:
     unsigned long cas = 0;
     unsigned long citac = 0;
     unsigned int aktivni = 1;
+    unsigned int pozice_v_ct;
     void (*p_func)(void);
     int typ = INFINITE ;
 
@@ -41,7 +42,7 @@ public:
 class ct //registr casovacu
 {
 private:
-    int pocet = 0;
+    unsigned int pocet = 0;
     unsigned int priznak[N_CASOVACU];
     casovac* addressy[N_CASOVACU];
 public:
@@ -49,7 +50,5 @@ public:
     void add_address(casovac *);
     void loop (void);
 } ;
-
-
 
 #endif // CASOVAC_H

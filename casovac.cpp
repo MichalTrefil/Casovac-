@@ -1,7 +1,7 @@
+//#include "casovac.h"
+//#include <time.h>
 #include "casovac.h"
-#include <time.h>
-//#include "pomocne.h"
-//#include <Arduino.h>
+#include <Arduino.h>
 
 ct ctAll;
 
@@ -17,7 +17,7 @@ casovac::casovac (unsigned long t,void (*f)(void)) /// INFINITE
     typ = INFINITE ;
     p_func = f;
     inkrement = t;
-    cas = clock();
+    cas = millis();
     aktivni = 1;
     ctAll.add_address(this);
 }
@@ -34,14 +34,14 @@ casovac::casovac (unsigned long t,unsigned long offset,void (*f)(void))  /// INF
 {
     p_func = f;
     inkrement = t;
-    cas = clock() + offset;
+    cas = millis() + offset;
     aktivni = 1;
     ctAll.add_address(this);
 }
 /// /////////////////////////////   run   ///////////////////////
 void casovac::over()
 {
-    if(clock() > cas )
+    if(millis() > cas )
     {
         cas = cas + inkrement;
         if(aktivni > 0)
@@ -55,7 +55,7 @@ void casovac::over()
 /// //////////////////////////////     init    //////////////////
 void casovac::init()
 {
-    cas = clock();
+    cas = millis();
 }
 /// /////////////////////////////   new cas , new funkce  //////////////////
 void casovac::new_time(unsigned long t )
@@ -107,7 +107,7 @@ void ct::loop(void)
 void casovac::start(unsigned long t ) /// ONCE
 {
     typ = ONCE ;
-    cas = clock() + t;
+    cas = millis() + t;
     aktivni++;
 }
 /// //////////////////////////// start SEVERAL ////////////////////////
@@ -116,7 +116,7 @@ void casovac::start(unsigned long t,unsigned long times) /// SEVERAL
     typ = SEVERAL ;
     citac = --times;
     inkrement = t;
-    cas = clock() + t;
+    cas = millis() + t;
     aktivni++;
 }
 /// ///////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ void casovac::start(unsigned long t,unsigned long times,void (*f)(void)) /// SEV
     typ = SEVERAL ;
     citac = --times;
     inkrement = t;
-    cas = clock() + t;
+    cas = millis() + t;
     aktivni++;
 }
 
