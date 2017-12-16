@@ -42,6 +42,7 @@ class ct //registr casovacu
 {
 private:
     int pocet = 0;
+    unsigned int priznak[N_CASOVACU];
     casovac* addressy[N_CASOVACU];
 public:
     ct();
