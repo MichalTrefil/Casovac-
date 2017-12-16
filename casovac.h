@@ -36,7 +36,7 @@ public:
     void loop_all();/// checkuje  vsechny instance tridy casovac
 };
 /// ///////////////////////////////////////// ct /////////////////////////////////////////
-class ct //casovace
+class ct //registr casovacu
 {
 private:
     int pocet = 0;
