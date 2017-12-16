@@ -1,6 +1,8 @@
 #ifndef CASOVAC_H
 #define CASOVAC_H
 
+#define N_CASOVACU 10
+
 #define NONE 0
 #define INFINITE 1
 #define ONCE 2
@@ -40,7 +42,7 @@ class ct //registr casovacu
 {
 private:
     int pocet = 0;
-    casovac* addressy[10];
+    casovac* addressy[N_CASOVACU];
 public:
     ct();
     void add_address(casovac *);
