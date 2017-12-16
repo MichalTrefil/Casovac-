@@ -20,14 +20,13 @@ void loop() {
 ////////////////////////////// funkce 1 //////////////////////////////
 void func(void) {  
   Serial.println("Im \"func\"");
-  t1.new_func(func2);
-  t1.new_time(1000);
+  t1.new_func(func2);  // zmena funkce 
+  t1.new_time(1000);   // zmena timeout
   
 }
 ////////////////////////////// funkce 2 ///////////////////////////////
 void func2(void) {  
   Serial.println("Im \"func2\"");
   t1.new_func(func);
-  t1.new_time(5000);
-  
+  t1.new_time(5000);  
 }
