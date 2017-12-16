@@ -7,7 +7,7 @@ casovac t2(func);             // definovany casovac pozdeji startovan jako t2.st
                               // nebo t2.start(1000,20); provede se 20X  
 casovac t3();                 // prazdny casovac
 casovac t4(2000,1000, func);  // pridany offset, posunuti zacatku casovani 
-casovac t5(2000, func);
+//casovac t5(2000, func);
 
 void setup() {
   Serial.begin(115200);
