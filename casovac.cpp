@@ -142,12 +142,12 @@ ct::ct() {}
 /// //////////////////////////   pridani addressy   //////////////////////////////////
 int ct::add_address(casovac *addr)
 {
-    int tmp;
-    addressy[pocet]  = addr;
+    //int tmp;
+    addressy[pocet]  = addr;  
     priznak[pocet] = 1;
     pocet++;
-    tmp = pocet - 1;
-    return tmp;
+    //tmp = 
+    return (int)pocet - 1;
 }
 
 /// //////////////////////  spuisteni prikazu clenu v poli     ///////////////////////
