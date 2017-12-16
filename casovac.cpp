@@ -9,9 +9,11 @@ ct ctAll;
 /// ////////// class casovac slouzi ke sposteni udalosti v urcitem intervalu //////////////////////////////////
 casovac::casovac ()
 {
-typ = NONE ;
-aktivni = 0;
+    typ = NONE ;
+    aktivni = 0;
+    pozice_v_ct = ctAll.add_address(this);
 }
+/// /////////////////////////////////////////////////////////////////////////////////////////
 casovac::casovac (unsigned long t,void (*f)(void)) /// INFINITE
 {
     typ = INFINITE ;
@@ -19,7 +21,7 @@ casovac::casovac (unsigned long t,void (*f)(void)) /// INFINITE
     inkrement = t;
     cas = millis();
     aktivni = 1;
-    ctAll.add_address(this);
+    pozice_v_ct = ctAll.add_address(this);
 }
 /// ///////////////////////////////////////////////////////////////////////////////////////
 casovac::casovac (void (*f)(void))  /// NONE
@@ -27,7 +29,7 @@ casovac::casovac (void (*f)(void))  /// NONE
     typ = NONE ;
     p_func = f;
     aktivni = 0;
-    ctAll.add_address(this);
+    pozice_v_ct = ctAll.add_address(this);
 }
 /// ///////////////////////////////////casovac (time,offset,func) ////////////////////////////////////////////////////////
 casovac::casovac (unsigned long t,unsigned long offset,void (*f)(void))  /// INFINITE
@@ -36,7 +38,7 @@ casovac::casovac (unsigned long t,unsigned long offset,void (*f)(void))  /// INF
     inkrement = t;
     cas = millis() + offset;
     aktivni = 1;
-    ctAll.add_address(this);
+    pozice_v_ct = ctAll.add_address(this);
 }
 /// /////////////////////////////   run   ///////////////////////
 void casovac::over()
@@ -46,6 +48,8 @@ void casovac::over()
         cas = cas + inkrement;
         if(aktivni > 0)
         {
+            /// zde se spousti pri preteceni
+            //Serial.print (pozice_v_ct);
             p_func();
             if(typ == ONCE ) aktivni--;
             if(typ == SEVERAL ) citac > 0 ? citac -- : aktivni = 0;
@@ -82,27 +86,7 @@ void casovac::loop_all()
 {
     ctAll.loop();
 }
-/// //////////////////////////////////////////////////////////////////////////////////
-/// //////////////////////////////////////////////////////////////////////////////////
-/// //////////////////////////////////////////////////////////////////////////////////
 
-ct::ct() {}
-
-/// //////////////////////////   pridani addressy   //////////////////////////////////
-void ct::add_address(casovac *addr)
-{
-    addressy[pocet]  = addr;
-    pocet++;
-}
-
-/// //////////////////////  spuisteni prikazu clenu v poli     ///////////////////////
-void ct::loop(void)
-{
-    for(int i  = 0; i < pocet; i++)
-    {
-        addressy[i]->over();
-    }
-}
 /// //////////////////////////// start ONCE ///////////////////////////
 void casovac::start(unsigned long t ) /// ONCE
 {
@@ -128,5 +112,41 @@ void casovac::start(unsigned long t,unsigned long times,void (*f)(void)) /// SEV
     inkrement = t;
     cas = millis() + t;
     aktivni++;
+}
+
+void casovac::del ()
+{
+    ctAll.del(pozice_v_ct);
+}
+
+/// //////////////////////////////////////////////////////////////////////////////////
+/// //////////////////////////////////////////////////////////////////////////////////
+/// //////////////////////////////////////////////////////////////////////////////////
+
+ct::ct() {}
+
+/// //////////////////////////   pridani addressy   //////////////////////////////////
+int ct::add_address(casovac *addr)
+{
+    int tmp;
+    addressy[pocet]  = addr;
+    priznak[pocet] = 1;
+    pocet++;
+    tmp = pocet - 1;
+    return tmp;
+}
+
+/// //////////////////////  spuisteni prikazu clenu v poli     ///////////////////////
+void ct::loop(void)
+{
+    for(int i  = 0; i < pocet; i++)
+    {
+        addressy[i]->over();
+    }
+}
+
+void ct::del(unsigned int tmp)
+{
+    priznak[tmp] = 0;
 }
 

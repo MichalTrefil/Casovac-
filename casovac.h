@@ -37,17 +37,19 @@ public:
     void aktiv();
     void inaktiv(); /// deaktivuje casovac
     void loop_all();/// checkuje  vsechny instance tridy casovac
+    void del ();
 };
 /// ///////////////////////////////////////// ct /////////////////////////////////////////
 class ct //registr casovacu
 {
 private:
     unsigned int pocet = 0;
-    unsigned int priznak[N_CASOVACU];
+    unsigned int priznak [N_CASOVACU];
     casovac* addressy[N_CASOVACU];
 public:
     ct();
-    void add_address(casovac *);
+    int add_address(casovac *);
+    void del(unsigned int);
     void loop (void);
 } ;
 
