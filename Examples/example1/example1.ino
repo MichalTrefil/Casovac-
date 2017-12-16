@@ -1,11 +1,11 @@
 
 #include <casovac.h>
 
-void func(void);   // predbezna deklarace 
-casovac t1(2000, func);  // cas vyprseni v milliseconds , a volana funkce 
-casovac t2(func); // definovany casovac pozdeji startovan jako t2.start(1000); porvede se pouze JEDNOU po 1 vterine
-                  // nebo t2.start(1000,20); provede se 20X  
-casovac t3(2000, func);
+void func(void);           // predbezna deklarace 
+casovac t1(2000, func);    // cas vyprseni v milliseconds , a volana funkce 
+casovac t2(func);          // definovany casovac pozdeji startovan jako t2.start(1000); porvede se pouze JEDNOU po 1 vterine
+                           // nebo t2.start(1000,20); provede se 20X  
+casovac t3();
 casovac t4(2000, func);
 casovac t5(2000, func);
 
