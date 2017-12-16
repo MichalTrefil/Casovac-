@@ -6,7 +6,7 @@ casovac t1(2000, func);       // cas vyprseni v milliseconds , a volana funkce
 casovac t2(func);             // definovany casovac pozdeji startovan jako t2.start(1000); porvede se pouze JEDNOU po 1 vterine
                               // nebo t2.start(1000,20); provede se 20X  
 casovac t3();                 // prazdny casovac
-casovac t4(2000,1000, func);  //pridany offset, posunuti zacatku casovani 
+casovac t4(2000,1000, func);  // pridany offset, posunuti zacatku casovani 
 casovac t5(2000, func);
 
 void setup() {
